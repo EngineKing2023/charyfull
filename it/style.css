@@ -25,6 +25,37 @@ body {
 	transition: none !important;
 }
 
+#screen,
+#screen * {
+	-webkit-tap-highlight-color: transparent !important;
+}
+
+#screen button:active,
+#screen button:focus:not(:focus-visible) {
+	outline: none;
+	box-shadow: none;
+	background-color: #000;
+}
+
+#screen button {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#screen a:active,
+#screen a:focus:not(:focus-visible) {
+	outline: none;
+	box-shadow: none;
+	background-color: transparent;
+}
+
+button:active {
+	outline: none;
+	box-shadow: none;
+}
+
 /* Nastavitve slike: top = odmik od vrha; clamp() = najmanjsa, odzivna in najvecja sirina. */
 #screen > img {
 	position: absolute;
@@ -203,12 +234,13 @@ body {
 	color: #fff;
 	text-align: center;
 	white-space: nowrap;
-	transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
-.center-button:hover .center-button__label {
-	color: var(--star-color);
-	text-shadow: 0 0 4px var(--star-glow), 0 0 10px var(--star-glow);
+@media (hover: hover) and (pointer: fine) {
+	.center-button:hover .center-button__label {
+		color: var(--star-color);
+		text-shadow: 0 0 4px var(--star-glow), 0 0 10px var(--star-glow);
+	}
 }
 
 .center-button__label--long {
@@ -379,6 +411,8 @@ body {
 	--orbit-radius: clamp(27.5px, calc(7vw - 0.5px), 33.5px);
 	--spark-size: clamp(10px, 3vw, 14px);
 	--trail-size: clamp(3px, 1vw, 5px);
+	-webkit-appearance: none;
+	appearance: none;
 	position: absolute;
 	display: none;
 	left: 50%;
@@ -400,8 +434,9 @@ body {
 }
 
 .call-button:focus-visible {
-	outline: 2px solid #fff;
-	outline-offset: 4px;
+	outline: none;
+	border-radius: 50%;
+	box-shadow: 0 0 0 2px #fff;
 }
 
 .call-button__spark {
@@ -452,9 +487,8 @@ body {
 	width: clamp(22px, 6vw, 27px);
 	height: clamp(22px, 6vw, 27px);
 	color: #fff;
-	filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.4));
+	filter: none;
 	transform: translate(-50%, -50%);
-	animation: handset-pulse 2.2s ease-in-out infinite;
 }
 
 @keyframes spark-orbit {
@@ -469,18 +503,6 @@ body {
 @keyframes trail-orbit {
 	to {
 		transform: rotate(360deg);
-	}
-}
-
-@keyframes handset-pulse {
-	0%,
-	100% {
-		opacity: 0.8;
-		filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.35));
-	}
-	50% {
-		opacity: 1;
-		filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.85));
 	}
 }
 
