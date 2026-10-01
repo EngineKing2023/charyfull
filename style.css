@@ -1,0 +1,700 @@
+:root {
+	--page-gutter: 16px;
+}
+
+html,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+}
+
+#screen {
+	--logo-size: min(clamp(172.8px, 23.04vw, 648px), calc(72vw - 23.04px), calc(72vh - 23.04px));
+	--cloud-size: clamp(26px, 3.4vw, 34px);
+	position: fixed;
+	inset: 0;
+	box-sizing: border-box;
+	padding: var(--page-gutter);
+	background: #000;
+}
+
+#screen *:not(.center-button__star):not(.center-button__trail-segment):not(.call-button__spark):not(.call-button__trail) {
+	animation: none !important;
+	transition: none !important;
+}
+
+/* Nastavitve slike: top = odmik od vrha; clamp() = najmanjsa, odzivna in najvecja sirina. */
+#screen > img {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: var(--logo-size);
+	max-width: none;
+	height: auto;
+	transform: translateX(-50%);
+}
+
+.language-switcher {
+	position: absolute;
+	top: var(--page-gutter);
+	right: var(--page-gutter);
+	z-index: 20;
+	display: flex;
+	align-items: center;
+	gap: clamp(6px, 0.8vw, 10px);
+}
+
+.language-switcher__button {
+	display: block;
+	width: clamp(26px, 2.2vw, 34px);
+	aspect-ratio: 3 / 2;
+	box-sizing: border-box;
+	padding: 0;
+	border: 1px solid rgba(255, 255, 255, 0.35);
+	border-radius: 3px;
+	background: transparent;
+	line-height: 0;
+	cursor: pointer;
+}
+
+.language-switcher__button img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.language-switcher__button[aria-pressed="true"] {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+.language-switcher__button:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 3px;
+}
+
+.center-buttons {
+	position: absolute;
+	top: max(50vh, calc(var(--logo-size) + 120px));
+	left: 50%;
+	display: grid;
+	width: min(clamp(207.36px, 24.192vw, 362.88px), calc(86.4vw - 27.648px));
+	gap: clamp(14.4px, 1.8vh, 21.6px);
+	transform: translate(-50%, -50%);
+	pointer-events: auto;
+}
+
+.center-button {
+	--star-color: #fff;
+	--star-glow: rgba(255, 255, 255, 0.85);
+	--star-speed: 12s;
+	--star-phase: 0s;
+	position: relative;
+	appearance: none;
+	margin: 0;
+	pointer-events: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: visible;
+	min-width: 0;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 5.45 / 1;
+	box-sizing: border-box;
+	padding: 0 clamp(10.8px, 2.16vw, 19.44px);
+	border: 1px solid #000;
+	border-radius: 0% / 45%;
+	background: #000;
+	font: inherit;
+	color: #fff;
+	text-align: center;
+	cursor: not-allowed;
+	opacity: 1;
+}
+
+.center-button:not(:disabled) {
+	cursor: pointer;
+}
+
+.center-button:nth-child(2) {
+	--star-color: #3da9ff;
+	--star-glow: rgba(61, 169, 255, 0.9);
+	--star-speed: 10.4s;
+	--star-phase: -0.8667s;
+}
+
+.center-button:nth-child(3) {
+	--star-color: #ff4545;
+	--star-glow: rgba(255, 69, 69, 0.9);
+	--star-speed: 13.6s;
+	--star-phase: -2.2667s;
+}
+
+.center-button__star,
+.center-button__trail-segment {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 11px;
+	height: 11px;
+	offset-path: inset(0.5px round 999px);
+	offset-anchor: center;
+	offset-rotate: auto;
+	animation: center-button-orbit var(--star-speed) linear infinite;
+	animation-delay: var(--star-phase);
+	pointer-events: none;
+}
+
+.center-button__star {
+	z-index: 3;
+	background: var(--star-color);
+	clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+	filter: drop-shadow(0 0 4px var(--star-glow));
+	opacity: 0;
+	animation-play-state: paused;
+}
+
+.center-button__trail-segment {
+	z-index: 2;
+	animation-delay: calc(var(--star-phase) + var(--trail-delay));
+	--trail-opacity-active: var(--trail-opacity);
+	opacity: 0;
+	animation-play-state: paused;
+	filter: none;
+	pointer-events: none;
+}
+
+.center-button--star-active .center-button__star {
+	opacity: 1;
+	animation-play-state: running;
+}
+
+.center-button--star-active .center-button__trail-segment {
+	opacity: var(--trail-opacity-active);
+	animation-play-state: running;
+}
+
+.center-button__trail-segment::after {
+	position: absolute;
+	top: 50%;
+	left: calc(0px - var(--trail-width));
+	width: var(--trail-width);
+	height: 3px;
+	border-radius: 999px;
+	background: linear-gradient(90deg, transparent, var(--star-color));
+	filter: drop-shadow(0 0 4px var(--star-glow)) drop-shadow(0 0 8px var(--star-glow));
+	content: "";
+	transform: translateY(-50%);
+}
+
+.center-button__label {
+	position: relative;
+	z-index: 1;
+	width: max-content;
+	max-width: 100%;
+	min-width: 0;
+	font-family: ui-monospace, monospace;
+	font-size: clamp(12.42px, 1.242vw, 18.63px);
+	font-weight: 700;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.center-button:hover .center-button__label {
+	color: var(--star-color);
+	text-shadow: 0 0 4px var(--star-glow), 0 0 10px var(--star-glow);
+}
+
+.center-button__label--long {
+	font-size: clamp(10.8px, 1.08vw, 16.2px);
+}
+
+.stick-man {
+	position: absolute;
+	left: var(--page-gutter);
+	bottom: var(--page-gutter);
+	width: clamp(32px, 4vw, 40px);
+	height: auto;
+	color: #fff;
+		appearance: none;
+		margin: 0;
+	transform-origin: center;
+	animation: stick-man-to-cloud 0.35s ease-in 3s forwards;
+}
+
+.stick-man--resting {
+	position: fixed;
+	bottom: auto;
+	color: #000;
+	filter: drop-shadow(0 0 1px #fff);
+	transform-origin: center;
+	animation: resting-man-appear 0.35s ease-out both;
+}
+
+@keyframes center-button-orbit {
+	from {
+		offset-distance: 0%;
+	}
+	to {
+		offset-distance: 100%;
+	}
+}
+
+.stick-man--resting .stick-man__torso,
+.stick-man--resting .stick-man__arm,
+.stick-man--resting .stick-man__leg {
+	animation: none;
+	transform: none;
+}
+
+.stick-cloud {
+	position: absolute;
+	left: var(--page-gutter);
+	bottom: var(--page-gutter);
+	width: var(--cloud-size);
+	height: auto;
+	color: #fff;
+	filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
+	opacity: 0;
+	transform: scale(0.65);
+	transform-origin: left bottom;
+	animation: cloud-form 0.35s ease-out 3s forwards, cloud-fade 0.3s ease-in 3.35s forwards;
+}
+
+.contact-info {
+	position: absolute;
+	left: 50%;
+	bottom: calc(var(--page-gutter) + 8px);
+	display: grid;
+	justify-items: center;
+	gap: clamp(4px, 0.8vh, 8px);
+	width: min(560px, calc(100vw - 32px));
+	color: #fff;
+	transform: translateX(-50%);
+}
+
+.animated-text {
+	display: block;
+	clip-path: inset(0 100% 0 0);
+	font-family: ui-monospace, monospace;
+	white-space: nowrap;
+}
+
+.phone-number {
+	width: 12ch;
+	font-size: clamp(18px, 4vw, 26px);
+	font-weight: 700;
+	line-height: 1.2;
+	text-align: center;
+}
+
+.contact-email {
+	width: max-content;
+	max-width: 100%;
+	font-size: clamp(12px, 2.8vw, 20px);
+	font-weight: 700;
+	color: #fff;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.copyright {
+	font-size: clamp(10px, 0.9vw, 12px);
+	text-align: center;
+}
+
+.phone-star {
+	position: fixed;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	width: 13px;
+	height: 13px;
+	color: #fff;
+	filter: drop-shadow(0 0 4px #fff);
+	opacity: 0;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+}
+
+.star-flight-path {
+		cursor: pointer;
+	position: fixed;
+	z-index: 9;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: visible;
+	pointer-events: none;
+}
+
+.star-flight-path path {
+	fill: none;
+	stroke: #fff;
+	stroke-width: 2;
+	stroke-linecap: round;
+	filter: drop-shadow(0 0 3px #fff);
+}
+
+.stick-man__torso,
+.stick-man__arm,
+.stick-man__leg {
+	transform-box: view-box;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+}
+
+.stick-man__torso {
+	transform-origin: 50% 61.8421%;
+	animation: sprint-lean 0.48s ease-in-out infinite alternate;
+}
+
+.stick-man__arm {
+	transform-origin: 50% 38.1579%;
+	animation-name: sprint-swing;
+	animation-duration: 0.48s;
+	animation-direction: alternate;
+}
+
+.stick-man__arm--left,
+.stick-man__leg--right {
+	animation-delay: -0.24s;
+}
+
+.stick-man__leg {
+	transform-origin: 50% 61.8421%;
+	animation-name: sprint-swing;
+	animation-duration: 0.48s;
+	animation-direction: alternate;
+}
+
+.call-button {
+	--button-size: clamp(56px, 14vw, 68px);
+	--orbit-radius: clamp(27.5px, calc(7vw - 0.5px), 33.5px);
+	--spark-size: clamp(10px, 3vw, 14px);
+	--trail-size: clamp(3px, 1vw, 5px);
+	position: absolute;
+	display: none;
+	left: 50%;
+	bottom: calc(var(--page-gutter) + 12px);
+	width: var(--button-size);
+	height: var(--button-size);
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: #000;
+	cursor: pointer;
+	transform: translateX(-50%);
+}
+
+@media screen and (max-width: 470px) and (hover: none) and (pointer: coarse) {
+	.call-button {
+		display: block;
+	}
+}
+
+.call-button:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 4px;
+}
+
+.call-button__spark {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 1;
+	width: var(--spark-size);
+	height: var(--spark-size);
+	background: #fff;
+	clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+	filter: drop-shadow(0 0 4px #fff);
+	animation: spark-orbit 2.4s linear infinite;
+}
+
+.call-button__spark--second {
+	animation-delay: -0.8s;
+}
+
+.call-button__spark--third {
+	animation-delay: -1.6s;
+}
+
+.call-button__trail {
+	position: absolute;
+	inset: -1px;
+	border-radius: 50%;
+	background: conic-gradient(from 300deg, transparent 0deg, rgba(255, 255, 255, 0.08) 18deg, rgba(255, 255, 255, 0.28) 38deg, rgba(255, 255, 255, 0.72) 54deg, #fff 60deg, transparent 61deg 360deg);
+	-webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--trail-size)), #000 calc(100% - var(--trail-size) + 1px));
+	mask: radial-gradient(farthest-side, transparent calc(100% - var(--trail-size)), #000 calc(100% - var(--trail-size) + 1px));
+	animation: trail-orbit 2.4s linear infinite;
+	pointer-events: none;
+}
+
+.call-button__trail--second {
+	animation-delay: -0.8s;
+}
+
+.call-button__trail--third {
+	animation-delay: -1.6s;
+}
+
+.call-button__icon {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 2;
+	width: clamp(22px, 6vw, 27px);
+	height: clamp(22px, 6vw, 27px);
+	color: #fff;
+	filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.4));
+	transform: translate(-50%, -50%);
+	animation: handset-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes spark-orbit {
+	from {
+		transform: translate(-50%, -50%) rotate(0deg) translateY(calc(0px - var(--orbit-radius))) rotate(0deg);
+	}
+	to {
+		transform: translate(-50%, -50%) rotate(360deg) translateY(calc(0px - var(--orbit-radius))) rotate(-360deg);
+	}
+}
+
+@keyframes trail-orbit {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes handset-pulse {
+	0%,
+	100% {
+		opacity: 0.8;
+		filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.35));
+	}
+	50% {
+		opacity: 1;
+		filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.85));
+	}
+}
+
+@keyframes sprint-lean {
+	from {
+		transform: rotate(7deg) translateY(0);
+	}
+	to {
+		transform: rotate(11deg) translateY(-1px);
+	}
+}
+
+@keyframes sprint-swing {
+	from {
+		transform: rotate(-25deg);
+	}
+	to {
+		transform: rotate(25deg);
+	}
+}
+
+@keyframes stick-man-to-cloud {
+	to {
+		opacity: 0;
+		transform: scale(0.55);
+	}
+}
+
+@keyframes resting-man-appear {
+	from {
+		opacity: 0;
+		transform: translateY(-8px) scale(0.3);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+@keyframes cloud-form {
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes cloud-fade {
+	to {
+		opacity: 0;
+		transform: scale(0.7);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.stick-man {
+		animation: none;
+		opacity: 0;
+	}
+
+	.stick-man__torso,
+	.stick-man__arm,
+	.stick-man__leg {
+		animation: none;
+	}
+
+	.stick-cloud {
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+
+	.animated-text {
+		clip-path: none;
+	}
+
+	.center-button__label {
+		clip-path: none;
+	}
+
+	.center-button__star,
+	.center-button__trail-segment {
+		animation-duration: calc(var(--star-speed) + var(--star-speed));
+		offset-distance: 25%;
+	}
+
+	.phone-star,
+	.star-flight-path {
+		display: none;
+	}
+
+	.call-button__spark {
+		animation: none;
+		transform: translate(-50%, -50%) translateY(calc(0px - var(--orbit-radius)));
+	}
+
+	.call-button__spark--second {
+		transform: translate(-50%, -50%) rotate(120deg) translateY(calc(0px - var(--orbit-radius))) rotate(-120deg);
+	}
+
+	.call-button__spark--third {
+		transform: translate(-50%, -50%) rotate(240deg) translateY(calc(0px - var(--orbit-radius))) rotate(-240deg);
+	}
+
+	.call-button__trail {
+		animation: none;
+	}
+
+	.call-button__trail--second {
+		transform: rotate(120deg);
+	}
+
+	.call-button__trail--third {
+		transform: rotate(240deg);
+	}
+
+	.call-button__icon {
+		animation: none;
+		opacity: 1;
+	}
+}
+
+@media screen and (min-width: 576px) {
+	:root {
+		--page-gutter: 20px;
+	}
+}
+
+@media screen and (min-width: 768px) {
+	:root {
+		--page-gutter: 24px;
+	}
+}
+
+@media screen and (min-width: 992px) {
+	:root {
+		--page-gutter: 32px;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	:root {
+		--page-gutter: 40px;
+	}
+}
+
+@media screen and (min-width: 1400px) {
+	:root {
+		--page-gutter: 48px;
+	}
+}
+
+@media screen and (min-width: 768px) and (max-height: 800px) {
+	#screen {
+		--logo-size: min(clamp(172.8px, 23.04vw, 648px), calc(72vw - 23.04px), 30.24vh);
+	}
+
+	.center-buttons {
+		top: max(50vh, calc(var(--logo-size) + 112px));
+		gap: clamp(9.6px, 1.8vh, 14.4px);
+	}
+}
+
+@media screen and (max-width: 470px) and (hover: none) and (pointer: coarse) {
+	.stick-man {
+		display: none;
+	}
+
+	.stick-man__torso,
+	.stick-man__arm,
+	.stick-man__leg {
+		animation: none;
+		transform: none;
+	}
+
+	.stick-cloud {
+		display: none;
+	}
+
+	.contact-info {
+		position: static;
+		display: contents;
+	}
+
+	.center-buttons {
+		top: 50%;
+	}
+
+	.phone-number {
+		position: absolute;
+		top: calc(50% - 112px);
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.contact-email {
+		position: absolute;
+		top: calc(50% + 82px);
+		left: 50%;
+		transform: translateX(-50%);
+		text-align: center;
+	}
+
+	.copyright {
+		position: absolute;
+		bottom: var(--page-gutter);
+		left: var(--page-gutter);
+	}
+
+	.center-button__label {
+		clip-path: none;
+	}
+
+	.phone-star,
+	.star-flight-path {
+		display: none;
+	}
+}
