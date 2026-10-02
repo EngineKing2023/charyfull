@@ -20,7 +20,7 @@ body {
 	background: #000;
 }
 
-#screen *:not(.center-button__star):not(.center-button__trail-segment):not(.call-button__spark):not(.call-button__trail) {
+#screen *:not(.call-button__spark):not(.call-button__trail) {
 	animation: none !important;
 	transition: none !important;
 }
@@ -121,8 +121,6 @@ button:active {
 .center-button {
 	--star-color: #fff;
 	--star-glow: rgba(255, 255, 255, 0.85);
-	--star-speed: 12s;
-	--star-phase: 0s;
 	position: relative;
 	appearance: none;
 	margin: 0;
@@ -137,9 +135,10 @@ button:active {
 	aspect-ratio: 5.45 / 1;
 	box-sizing: border-box;
 	padding: 0 clamp(10.8px, 2.16vw, 19.44px);
-	border: 1px solid #000;
-	border-radius: 0% / 45%;
+	border: 1px solid var(--star-color);
+	border-radius: 8px;
 	background: #000;
+	box-shadow: 0 0 8px var(--star-glow);
 	font: inherit;
 	color: #fff;
 	text-align: center;
@@ -154,149 +153,16 @@ button:active {
 .center-button--american {
 	--star-color: #3da9ff;
 	--star-glow: rgba(61, 169, 255, 0.9);
-	--star-speed: 8s;
-}
-
-.center-button--american .center-button__star--multi {
-	width: 9px;
-	height: 9px;
-	background: transparent;
-	clip-path: none;
-	filter: none;
-	animation-delay: var(--star-offset);
-}
-
-.center-button--american .center-button__star--multi:nth-of-type(odd) {
-	--star-color: #3da9ff;
-	--star-glow: rgba(61, 169, 255, 0.9);
-}
-
-.center-button--american .center-button__star--multi:nth-of-type(even) {
-	--star-color: #fff;
-	--star-glow: rgba(255, 255, 255, 0.9);
-}
-
-.center-button--american .center-button__star-shape {
-	position: absolute;
-	inset: 0;
-	background: var(--star-color);
-	clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
-	filter: drop-shadow(0 0 4px var(--star-glow));
-}
-
-.center-button--american .center-button__star-trail {
-	position: absolute;
-	top: 50%;
-	right: 100%;
-	width: clamp(20px, 2vw, 26px);
-	height: 4px;
-	border-radius: 999px;
-	background: linear-gradient(90deg, transparent, var(--star-color));
-	filter: drop-shadow(0 0 6px var(--star-glow));
-	transform: translateY(-50%);
-}
-
-.center-button--american .center-button__star--multi:nth-of-type(1) {
-	--star-offset: 0s;
-}
-
-.center-button--american .center-button__star--multi:nth-of-type(2) {
-	--star-offset: -1s;
-}
-
-.center-button--american .center-button__star--multi:nth-of-type(3) {
-	--star-offset: -2s;
-}
-
-.center-button--american .center-button__star--multi:nth-of-type(4) {
-	--star-offset: -3s;
-}
-
-.center-button--american .center-button__star--multi:nth-of-type(5) {
-	--star-offset: -4s;
-}
-
-.center-button--american .center-button__star--multi:nth-of-type(6) {
-	--star-offset: -5s;
-}
-
-.center-button--american .center-button__star--multi:nth-of-type(7) {
-	--star-offset: -6s;
-}
-
-.center-button--american .center-button__star--multi:nth-of-type(8) {
-	--star-offset: -7s;
 }
 
 .center-button:nth-child(2) {
 	--star-color: #fff;
 	--star-glow: rgba(255, 255, 255, 0.9);
-	--star-speed: 10.4s;
-	--star-phase: -0.8667s;
 }
 
 .center-button:nth-child(3) {
 	--star-color: #ff4545;
 	--star-glow: rgba(255, 69, 69, 0.9);
-	--star-speed: 13.6s;
-	--star-phase: -2.2667s;
-}
-
-.center-button__star,
-.center-button__trail-segment {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 11px;
-	height: 11px;
-	offset-path: inset(0.5px round 999px);
-	offset-anchor: center;
-	offset-rotate: auto;
-	animation: center-button-orbit var(--star-speed) linear infinite;
-	animation-delay: var(--star-phase);
-	pointer-events: none;
-}
-
-.center-button__star {
-	z-index: 3;
-	background: var(--star-color);
-	clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
-	filter: drop-shadow(0 0 4px var(--star-glow));
-	opacity: 0;
-	animation-play-state: paused;
-}
-
-.center-button__trail-segment {
-	z-index: 2;
-	animation-delay: calc(var(--star-phase) + var(--trail-delay));
-	--trail-opacity-active: var(--trail-opacity);
-	opacity: 0;
-	animation-play-state: paused;
-	filter: none;
-	pointer-events: none;
-}
-
-.center-button--star-active .center-button__star {
-	opacity: 1;
-	animation-play-state: running;
-}
-
-.center-button--star-active .center-button__trail-segment {
-	opacity: var(--trail-opacity-active);
-	animation-play-state: running;
-}
-
-.center-button__trail-segment::after {
-	position: absolute;
-	top: 50%;
-	left: calc(0px - var(--trail-width));
-	width: var(--trail-width);
-	height: 3px;
-	border-radius: 999px;
-	background: linear-gradient(90deg, transparent, var(--star-color));
-	filter: drop-shadow(0 0 4px var(--star-glow)) drop-shadow(0 0 8px var(--star-glow));
-	content: "";
-	transform: translateY(-50%);
 }
 
 .center-button__label {
@@ -311,13 +177,6 @@ button:active {
 	color: #fff;
 	text-align: center;
 	white-space: nowrap;
-}
-
-@media (hover: hover) and (pointer: fine) {
-	.center-button:hover .center-button__label {
-		color: var(--star-color);
-		text-shadow: 0 0 4px var(--star-glow), 0 0 10px var(--star-glow);
-	}
 }
 
 .center-button__label--long {
@@ -344,15 +203,6 @@ button:active {
 	filter: drop-shadow(0 0 1px #fff);
 	transform-origin: center;
 	animation: resting-man-appear 0.35s ease-out both;
-}
-
-@keyframes center-button-orbit {
-	from {
-		offset-distance: 0%;
-	}
-	to {
-		offset-distance: 100%;
-	}
 }
 
 .stick-man--resting .stick-man__torso,
@@ -488,6 +338,9 @@ button:active {
 	--orbit-radius: clamp(27.5px, calc(7vw - 0.5px), 33.5px);
 	--spark-size: clamp(10px, 3vw, 14px);
 	--trail-size: clamp(3px, 1vw, 5px);
+	--spark-color-first: 61, 169, 255;
+	--spark-color-second: 255, 255, 255;
+	--spark-color-third: 255, 69, 69;
 	-webkit-appearance: none;
 	appearance: none;
 	position: absolute;
@@ -501,6 +354,7 @@ button:active {
 	border-radius: 50%;
 	background: #000;
 	cursor: pointer;
+	text-decoration: none;
 	transform: translateX(-50%);
 }
 
@@ -523,25 +377,30 @@ button:active {
 	z-index: 1;
 	width: var(--spark-size);
 	height: var(--spark-size);
-	background: #fff;
+	background: rgb(var(--spark-color-first));
 	clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
-	filter: drop-shadow(0 0 4px #fff);
+	filter: drop-shadow(0 0 4px rgb(var(--spark-color-first)));
 	animation: spark-orbit 2.4s linear infinite;
 }
 
 .call-button__spark--second {
+	background: rgb(var(--spark-color-second));
+	filter: drop-shadow(0 0 4px rgb(var(--spark-color-second)));
 	animation-delay: -0.8s;
 }
 
 .call-button__spark--third {
+	background: rgb(var(--spark-color-third));
+	filter: drop-shadow(0 0 4px rgb(var(--spark-color-third)));
 	animation-delay: -1.6s;
 }
 
 .call-button__trail {
+	--trail-color-rgb: var(--spark-color-first);
 	position: absolute;
 	inset: -1px;
 	border-radius: 50%;
-	background: conic-gradient(from 300deg, transparent 0deg, rgba(255, 255, 255, 0.08) 18deg, rgba(255, 255, 255, 0.28) 38deg, rgba(255, 255, 255, 0.72) 54deg, #fff 60deg, transparent 61deg 360deg);
+	background: conic-gradient(from 300deg, transparent 0deg, rgba(var(--trail-color-rgb), 0.08) 18deg, rgba(var(--trail-color-rgb), 0.28) 38deg, rgba(var(--trail-color-rgb), 0.72) 54deg, rgb(var(--trail-color-rgb)) 60deg, transparent 61deg 360deg);
 	-webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--trail-size)), #000 calc(100% - var(--trail-size) + 1px));
 	mask: radial-gradient(farthest-side, transparent calc(100% - var(--trail-size)), #000 calc(100% - var(--trail-size) + 1px));
 	animation: trail-orbit 2.4s linear infinite;
@@ -549,10 +408,12 @@ button:active {
 }
 
 .call-button__trail--second {
+	--trail-color-rgb: var(--spark-color-second);
 	animation-delay: -0.8s;
 }
 
 .call-button__trail--third {
+	--trail-color-rgb: var(--spark-color-third);
 	animation-delay: -1.6s;
 }
 
@@ -657,12 +518,6 @@ button:active {
 
 	.center-button__label {
 		clip-path: none;
-	}
-
-	.center-button__star,
-	.center-button__trail-segment {
-		animation-duration: calc(var(--star-speed) + var(--star-speed));
-		offset-distance: 25%;
 	}
 
 	.phone-star,
